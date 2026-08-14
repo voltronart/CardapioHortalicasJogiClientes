@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hortaliças Jogi — Peça já</title>
+<link rel="stylesheet" href="css/loja-avulso.css">
+</head>
+<body>
+
+<!-- TELA: carregando -->
+<div id="tela-carregando" class="tela-estado">
+  <p>Carregando cardápio...</p>
+</div>
+
+<!-- TELA: loja -->
+<div id="tela-loja" class="escondido">
+
+  <header class="topo">
+    <div class="topo-marca">
+      <span class="topo-selo">🌿</span>
+      <div>
+        <h1>Hortaliças Jogi</h1>
+        <p>Direto da horta pra sua mesa</p>
+      </div>
+    </div>
+    <button id="cartBtn" class="botao-carrinho">
+      🧺 <span id="cartCount">0</span>
+    </button>
+  </header>
+
+  <main class="conteudo-loja">
+    <section class="grid-produtos" id="grid-produtos">
+      <!-- produtos renderizados via JS -->
+    </section>
+  </main>
+
+  <!-- CARRINHO (drawer) -->
+  <div id="cartDrawer" class="carrinho-drawer escondido">
+    <div class="carrinho-cabecalho">
+      <h2>Seu carrinho</h2>
+      <button id="btn-fechar-carrinho" class="botao-icone">Fechar</button>
+    </div>
+
+    <div class="carrinho-lista" id="carrinho-lista">
+      <p class="carrinho-vazio">Seu carrinho está vazio.</p>
+    </div>
+
+    <div class="carrinho-rodape">
+      <div class="carrinho-total-linha">
+        <span>Total</span>
+        <strong id="carrinho-total">R$ 0,00</strong>
+      </div>
+      <button id="btn-finalizar-pedido" class="botao-primario botao-full">
+        Finalizar pedido
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL: dados do cliente (só aparece na finalização) -->
+  <div id="modalDadosCliente" class="modal-overlay escondido">
+    <div class="modal-box">
+      <h2>Quase lá!</h2>
+      <p class="modal-subtitulo">Só precisamos do seu nome e WhatsApp para enviar o pedido.</p>
+
+      <form id="form-dados-cliente">
+        <label for="cliente-nome">Seu nome</label>
+        <input type="text" id="cliente-nome" placeholder="Nome completo" required>
+
+        <label for="cliente-telefone">WhatsApp</label>
+        <input type="tel" id="cliente-telefone" placeholder="(61) 99999-9999" required>
+
+        <div class="modal-acoes">
+          <button type="button" class="botao-secundario" id="btn-cancelar-dados">Voltar</button>
+          <button type="submit" class="botao-primario">Enviar pedido</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="cartToast" class="toast"></div>
+
+</div>
+
+<!-- TELA: cardápio vazio -->
+<div id="tela-vazia" class="tela-estado escondido">
+  <p>Nenhum produto disponível no momento. Volte mais tarde!</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabaseConfig.js"></script>
+<script src="js/supabaseClient.js"></script>
+<script src="js/loja-avulso.js"></script>
+
+</body>
+</html>
