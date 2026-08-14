@@ -244,9 +244,10 @@ async function finalizarPedido(event) {
 
   const nome = document.getElementById("cliente-nome").value.trim();
   const telefone = document.getElementById("cliente-telefone").value.trim();
+  const endereco = document.getElementById("cliente-endereco").value.trim();
 
-  if (!nome || !telefone) {
-    alert("Preencha seu nome e WhatsApp para continuar.");
+  if (!nome || !telefone || !endereco) {
+    alert("Preencha nome, WhatsApp e endereço para continuar.");
     return;
   }
 
@@ -269,10 +270,11 @@ async function finalizarPedido(event) {
     }));
 
     // O total NÃO é enviado - a function "criar_pedido_avulso" recalcula
-    // no servidor usando o preco_avulso de cada produto, por segurança.
+    // no servidor usando o preco de cada produto, por segurança.
     const { data: pedidoId, error } = await supabaseClient.rpc("criar_pedido_avulso", {
       p_nome: nome,
       p_telefone: telefone,
+      p_endereco: endereco,
       p_itens: itensParaSalvar,
     });
 
@@ -284,7 +286,7 @@ async function finalizarPedido(event) {
 
     const total = calcularTotalCarrinho();
 
-    abrirWhatsApp(itensParaSalvar, total, pedidoId, nome);
+    abrirWhatsApp(itensParaSalvar, total, pedidoId, nome, endereco);
 
     carrinho = {};
     salvarCarrinhoStorage();
@@ -307,11 +309,12 @@ async function finalizarPedido(event) {
 // ==========================================
 // 7. Mensagem do WhatsApp
 // ==========================================
-function abrirWhatsApp(itens, total, pedidoId, nomeCliente) {
+function abrirWhatsApp(itens, total, pedidoId, nomeCliente, endereco) {
   const numeroPedido = String(pedidoId).slice(0, 8);
 
   let mensagem = `📋 *NOVO PEDIDO AVULSO #${numeroPedido}*\n`;
-  mensagem += `👤 ${nomeCliente}\n\n`;
+  mensagem += `👤 ${nomeCliente}\n`;
+  mensagem += `📍 ${endereco}\n\n`;
 
   mensagem += `🛒 *Itens:*\n`;
   itens.forEach((item) => {
