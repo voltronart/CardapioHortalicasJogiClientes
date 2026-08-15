@@ -310,7 +310,7 @@ async function finalizarPedido(event) {
 // 7. Mensagem do WhatsApp
 // ==========================================
 function abrirWhatsApp(itens, total, pedidoId, nomeCliente, endereco) {
-  const numeroPedido = String(pedidoId).slice(0, 8);
+  const numeroPedido = String(pedidoId).padStart(3, "0");
 
   let mensagem = `📋 *NOVO PEDIDO AVULSO #${numeroPedido}*\n`;
   mensagem += `👤 ${nomeCliente}\n`;
