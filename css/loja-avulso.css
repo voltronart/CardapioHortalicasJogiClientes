@@ -120,14 +120,14 @@ h1, h2, h3 {
 
 .conteudo-loja {
   padding: 24px 18px 60px;
-  max-width: 920px;
+  max-width: 1180px;
   margin: 0 auto;
 }
 
 .grid-produtos {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
 }
 
 .card-produto {
@@ -147,16 +147,17 @@ h1, h2, h3 {
 
 .card-produto-imagem {
   width: 100%;
-  height: 136px;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   background: var(--borda);
 }
 
 .card-produto-nome {
-  margin: 14px 14px 2px;
+  margin: 14px 14px 4px;
   font-size: 1.05rem;
   font-weight: 600;
   color: var(--tinta);
+  line-height: 1.25;
 }
 
 .card-produto-descricao {
@@ -164,6 +165,7 @@ h1, h2, h3 {
   font-size: 0.82rem;
   color: var(--tinta-suave);
   flex-grow: 1;
+  line-height: 1.4;
 }
 
 /* "Etiqueta de feira": preço com leve rotação e traço tracejado */
@@ -186,6 +188,11 @@ h1, h2, h3 {
   gap: 8px;
   padding: 12px 14px 16px;
   margin-top: 8px;
+}
+
+.card-produto-acoes .botao-primario {
+  padding: 10px 8px;
+  font-size: 0.82rem;
 }
 
 .input-quantidade {
@@ -512,14 +519,63 @@ h1, h2, h3 {
 
 /* --- Responsivo --- */
 
-@media (max-width: 480px) {
-  .carrinho-drawer {
-    width: 100%;
+/* Telas médias (tablet): 3 colunas */
+@media (max-width: 900px) {
+  .grid-produtos {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
+
+/* Mobile: 2 colunas, cards mais compactos */
+@media (max-width: 620px) {
+  .conteudo-loja {
+    padding: 18px 12px 60px;
   }
 
   .grid-produtos {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
+  }
+
+  .card-produto-nome {
+    margin: 10px 10px 3px;
+    font-size: 0.92rem;
+  }
+
+  .card-produto-descricao {
+    margin: 0 10px;
+    font-size: 0.76rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-produto-preco {
+    margin: 8px 10px 0;
+    font-size: 0.82rem;
+    padding: 2px 8px;
+  }
+
+  .card-produto-acoes {
+    padding: 10px 10px 12px;
+    flex-wrap: wrap;
+  }
+
+  .input-quantidade {
+    width: 46px;
+    padding: 7px;
+    font-size: 0.85rem;
+  }
+
+  .botao-primario {
+    padding: 9px 10px;
+    font-size: 0.82rem;
+  }
+
+  .carrinho-drawer {
+    width: 100%;
   }
 }
 
