@@ -9,6 +9,8 @@
 
 const CONFIG = {
   whatsappNumero: "5561996433209",
+  pixChave: "38991800973",
+  pixNome: "Marcelo Galvão Lombardi",
 };
 
 let produtosDisponiveis = [];
@@ -355,6 +357,8 @@ function abrirWhatsApp(itens, total, pedidoId, nomeCliente, endereco, formaPagam
 
   if (formaPagamento === "pix") {
     mensagem += `\n💳 Pagamento: Pix`;
+    mensagem += `\n🔑 Chave Pix: ${CONFIG.pixChave}`;
+    mensagem += `\n👤 Nome: ${CONFIG.pixNome}`;
   } else if (formaPagamento === "dinheiro") {
     mensagem += `\n💵 Pagamento: Dinheiro`;
     if (trocoPara) {
