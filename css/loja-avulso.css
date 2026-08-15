@@ -339,6 +339,42 @@ body {
   flex: 1;
 }
 
+.opcoes-pagamento {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.opcao-pagamento {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-weight: 500 !important;
+  font-size: 0.88rem !important;
+  color: #1F2937 !important;
+  cursor: pointer;
+  margin-top: 0 !important;
+}
+
+.opcao-pagamento input {
+  width: auto;
+  margin: 0;
+}
+
+.opcao-pagamento:has(input:checked) {
+  border-color: #4C7A3F;
+  background: #F0F5EE;
+}
+
+#bloco-troco {
+  margin-top: 4px;
+}
+
 /* --- Toast --- */
 
 .toast {
