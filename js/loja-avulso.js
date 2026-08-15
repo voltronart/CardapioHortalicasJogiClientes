@@ -236,6 +236,22 @@ function fecharModalDados() {
   document.getElementById("modalDadosCliente").classList.add("escondido");
 }
 
+function configurarFormaPagamento() {
+  const radios = document.querySelectorAll('input[name="forma-pagamento"]');
+  const blocoTroco = document.getElementById("bloco-troco");
+
+  radios.forEach((radio) => {
+    radio.addEventListener("change", () => {
+      if (radio.value === "dinheiro" && radio.checked) {
+        blocoTroco.classList.remove("escondido");
+      } else if (radio.value === "pix" && radio.checked) {
+        blocoTroco.classList.add("escondido");
+        document.getElementById("cliente-troco").value = "";
+      }
+    });
+  });
+}
+
 // ==========================================
 // 6. Finalizar pedido (chamado ao confirmar o modal de dados)
 // ==========================================
@@ -245,9 +261,19 @@ async function finalizarPedido(event) {
   const nome = document.getElementById("cliente-nome").value.trim();
   const telefone = document.getElementById("cliente-telefone").value.trim();
   const endereco = document.getElementById("cliente-endereco").value.trim();
+  const formaPagamento = document.querySelector('input[name="forma-pagamento"]:checked')?.value;
+  const trocoInput = document.getElementById("cliente-troco").value.trim();
+  const trocoPara = trocoInput ? parseFloat(trocoInput) : null;
 
-  if (!nome || !telefone || !endereco) {
-    alert("Preencha nome, WhatsApp e endereço para continuar.");
+  if (!nome || !telefone || !endereco || !formaPagamento) {
+    alert("Preencha nome, WhatsApp, endereço e forma de pagamento para continuar.");
+    return;
+  }
+
+  const totalAtual = calcularTotalCarrinho();
+
+  if (formaPagamento === "dinheiro" && trocoPara !== null && trocoPara < totalAtual) {
+    alert("O valor para troco não pode ser menor que o total do pedido.");
     return;
   }
 
@@ -276,6 +302,8 @@ async function finalizarPedido(event) {
       p_telefone: telefone,
       p_endereco: endereco,
       p_itens: itensParaSalvar,
+      p_forma_pagamento: formaPagamento,
+      p_troco_para: formaPagamento === "dinheiro" ? trocoPara : null,
     });
 
     if (error) {
@@ -286,7 +314,7 @@ async function finalizarPedido(event) {
 
     const total = calcularTotalCarrinho();
 
-    abrirWhatsApp(itensParaSalvar, total, pedidoId, nome, endereco);
+    abrirWhatsApp(itensParaSalvar, total, pedidoId, nome, endereco, formaPagamento, trocoPara);
 
     carrinho = {};
     salvarCarrinhoStorage();
@@ -294,6 +322,7 @@ async function finalizarPedido(event) {
     fecharCarrinho();
     fecharModalDados();
     document.getElementById("form-dados-cliente").reset();
+    document.getElementById("bloco-troco").classList.add("escondido");
 
     mostrarToast("Pedido enviado com sucesso!");
 
@@ -309,7 +338,7 @@ async function finalizarPedido(event) {
 // ==========================================
 // 7. Mensagem do WhatsApp
 // ==========================================
-function abrirWhatsApp(itens, total, pedidoId, nomeCliente, endereco) {
+function abrirWhatsApp(itens, total, pedidoId, nomeCliente, endereco, formaPagamento, trocoPara) {
   const numeroPedido = String(pedidoId).padStart(3, "0");
 
   let mensagem = `📋 *NOVO PEDIDO AVULSO #${numeroPedido}*\n`;
@@ -323,6 +352,18 @@ function abrirWhatsApp(itens, total, pedidoId, nomeCliente, endereco) {
   });
 
   mensagem += `\n💰 *Total: ${formatarPreco(total)}*`;
+
+  if (formaPagamento === "pix") {
+    mensagem += `\n💳 Pagamento: Pix`;
+  } else if (formaPagamento === "dinheiro") {
+    mensagem += `\n💵 Pagamento: Dinheiro`;
+    if (trocoPara) {
+      const troco = trocoPara - total;
+      mensagem += `\n🔄 Troco para ${formatarPreco(trocoPara)} (levar ${formatarPreco(troco)} de troco)`;
+    } else {
+      mensagem += `\n🔄 Sem troco`;
+    }
+  }
 
   const mensagemCodificada = encodeURIComponent(mensagem);
   const url = `https://wa.me/${CONFIG.whatsappNumero}?text=${mensagemCodificada}`;
@@ -344,6 +385,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   carregarCarrinhoStorage();
   await carregarProdutos();
   renderizarCarrinho();
+  configurarFormaPagamento();
 
   document.getElementById("cartBtn").addEventListener("click", abrirCarrinho);
   document.getElementById("btn-fechar-carrinho").addEventListener("click", fecharCarrinho);
