@@ -73,6 +73,23 @@
         <label for="cliente-endereco">Endereço de entrega</label>
         <input type="text" id="cliente-endereco" placeholder="Rua, número, bairro" required>
 
+        <label>Forma de pagamento</label>
+        <div class="opcoes-pagamento">
+          <label class="opcao-pagamento">
+            <input type="radio" name="forma-pagamento" value="pix" checked>
+            Pix
+          </label>
+          <label class="opcao-pagamento">
+            <input type="radio" name="forma-pagamento" value="dinheiro">
+            Dinheiro
+          </label>
+        </div>
+
+        <div id="bloco-troco" class="escondido">
+          <label for="cliente-troco">Precisa de troco para quanto?</label>
+          <input type="number" id="cliente-troco" step="0.01" placeholder="Ex: 50,00 (deixe em branco se não precisar)">
+        </div>
+
         <div class="modal-acoes">
           <button type="button" class="botao-secundario" id="btn-cancelar-dados">Voltar</button>
           <button type="submit" class="botao-primario">Enviar pedido</button>
