@@ -372,7 +372,7 @@ function abrirWhatsApp(itens, total, pedidoId, nomeCliente, endereco, formaPagam
   const mensagemCodificada = encodeURIComponent(mensagem);
   const url = `https://wa.me/${CONFIG.whatsappNumero}?text=${mensagemCodificada}`;
 
-  window.open(url, "_blank");
+  window.location.href = url;
 }
 
 // ==========================================
